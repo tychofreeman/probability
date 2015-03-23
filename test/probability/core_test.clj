@@ -68,3 +68,20 @@
             expected-profit-without-new-arena (+ (* 0.6 100000) (* 0.4 1000000))]
         (is (<  expected-profit-without-new-arena expected-profit-with-new-arena)))))) 
 
+(deftest exercises-pg-162
+  (testing "#1 - The probability that Ruby will get a scholarship is .35; if she gets the scholarship, the probability that she will graduate is .82. If she does not get the scholarship, the probability that she will graduate is .44. What is the probability that she will graduate?"
+    (let [no-scholarship (- 1 0.35)
+          scholarship 0.35
+          if-scholarship-then-graduate 0.82
+          if-no-scholarship-then-graduate 0.44
+          graduate (+ (* no-scholarship if-no-scholarship-then-graduate)
+                      (* scholarship if-scholarship-then-graduate))]
+      (is (> if-scholarship-then-graduate graduate if-no-scholarship-then-graduate))))
+  (testing "#2 - If a rat turns left in a maze, it is given food."
+    (let [turns-left 0.5
+          if-shock-turns-left 0.84
+          if-food-turns-left 0.72
+          turns-left-next-time (fn [turns-left] (let [turns-right (- 1 turns-left)] (+ (* turns-left if-food-turns-left) (* turns-right if-shock-turns-left))))
+          [first-time second-time third-time] (take 3 (iterate turns-left-next-time turns-left))]
+      (is (< first-time third-time second-time)))))
+
